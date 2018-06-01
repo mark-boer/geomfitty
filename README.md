@@ -24,3 +24,6 @@ pytest
  * Add the cone shape
  * Add doctests and include these in pytest
  * Add jacobian to fits
+ * Add remaining fits
+ * Add tox and travis
+ * Add typing and start using mypy

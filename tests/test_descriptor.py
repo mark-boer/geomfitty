@@ -1,5 +1,5 @@
 from geomfitty._descriptor import Position, Direction, PositiveNumber
-from .util import assert_vector_equal
+from .test_util import assert_vector_equal
 
 import pytest
 
