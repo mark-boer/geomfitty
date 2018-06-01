@@ -85,6 +85,16 @@ class TestCircle3D(AbstractTestGeom):
     def gen_random_shape(self):
         return geom.Circle3D(np.random.uniform(size=(3,)), np.random.uniform(size=(3,)), np.random.uniform())
 
+    def test_distance_to_a_point(self):
+        circle = geom.Circle3D([0,0,0], [1,0,0], 1)
+        assert circle.distance_to_point([1,1,0]) == 1
+        assert circle.distance_to_point([0,0,2]) == 1
+
 class TestTorus(AbstractTestGeom):
     def gen_random_shape(self):
         return geom.Torus(np.random.uniform(size=(3,)), np.random.uniform(size=(3,)), np.random.uniform(), np.random.uniform())
+
+    def test_distance_to_a_point(self):
+        torus = geom.Torus([0,0,0], [1,0,0], 1, 0.5)
+        assert torus.distance_to_point([1,1,0]) == 0.5
+        assert torus.distance_to_point([0,0,2]) == 0.5

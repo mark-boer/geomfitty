@@ -24,6 +24,7 @@ class Line(GeometricShape):
 
     def distance_to_point(self, point):
         delta_p = point - self.anchor_point
+        # return np.linalg.norm(np.cross(delta_p, self.direction), axis=-1)
         return distance_pp(delta_p, np.expand_dims(np.dot(delta_p, self.direction), axis=1) @ np.atleast_2d(self.direction))
 
 class Plane(GeometricShape):
@@ -69,7 +70,10 @@ class Circle3D(GeometricShape):
         self.radius = radius
     
     def distance_to_point(self, point):
-        pass
+        delta_p = point - self.center
+        x1 = np.expand_dims(np.dot(delta_p, self.direction), axis=1) @ np.atleast_2d(self.direction)
+        x2 = delta_p - x1
+        return np.sqrt(np.linalg.norm(x1, axis=-1)**2 + (np.linalg.norm(x2, axis=-1) - self.radius)**2)
 
 class Torus(Circle3D):
     minor_radius = PositiveNumber()
