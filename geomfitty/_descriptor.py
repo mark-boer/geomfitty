@@ -3,6 +3,7 @@ from weakref import WeakKeyDictionary
 
 DTYPE = np.float64
 
+
 class Position:
     def __init__(self):
         self._instance_data = WeakKeyDictionary()
@@ -16,10 +17,11 @@ class Position:
         return view
 
     def __set__(self, instance, value):
-        value = np.array(value, dtype=DTYPE, copy=True) # TODO copy?
+        value = np.array(value, dtype=DTYPE, copy=True)  # TODO copy?
         if value.shape != (3,):
-            raise ValueError('Could not construct a 3D point')
+            raise ValueError("Could not construct a 3D point")
         self._instance_data[instance] = value
+
 
 class Direction:
     def __init__(self):
@@ -37,8 +39,9 @@ class Direction:
         value = np.array(value, dtype=DTYPE, copy=True)
         value /= np.linalg.norm(value)
         if value.shape != (3,):
-            raise ValueError('Could not construct a 3D point')
+            raise ValueError("Could not construct a 3D point")
         self._instance_data[instance] = value
+
 
 class PositiveNumber:
     def __init__(self):
@@ -53,6 +56,9 @@ class PositiveNumber:
     def __set__(self, instance, value):
         value = DTYPE(value)
         if value < 0:
-            raise ValueError('{} must be initialized with a positive number'.format(self.__class__.__name__))
+            raise ValueError(
+                "{} must be initialized with a positive number".format(
+                    self.__class__.__name__
+                )
+            )
         self._instance_data[instance] = value
-
