@@ -29,7 +29,9 @@ black .
 ```
 
 ### todo
+ * Add more tests
  * Add remaining fits
  * Add doctests and include these in pytest
  * Add jacobian to fits
  * Add typing and start using mypy
+ * Add python <=3.4 support
