@@ -38,8 +38,8 @@ def test_fuzz_plane():
     plane1 = fit.plane_fit(points)
     plane2, results = brute_force_fit(geom.Plane, (3,3), points)
 
-    print(plane1.normal)
-    print(plane2.normal)
+    # print(plane1.normal)
+    # print(plane2.normal)
 
     assert_direction_equivalent(plane1.normal, plane2.normal)
     assert_float_equal(np.sum(plane1.distance_to_point(points)**2), np.sum(plane2.distance_to_point(points)**2))

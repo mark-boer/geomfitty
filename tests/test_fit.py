@@ -1,5 +1,5 @@
 from geomfitty import fit
-from .test_util import assert_vector_equal
+from .test_util import assert_vector_equal, assert_direction_equivalent, assert_float_equal
 
 import numpy as np
 import pytest
@@ -51,5 +51,19 @@ class TestSphere:
         data = np.array([[1,0,0],[0,1,0],[0,0,1],[-1,0,0]])
         sphere = fit.sphere_fit(data, weights=[1,1,1,1])
         assert_vector_equal(np.array([0,0,0]), sphere.center)
-        assert sphere.radius == 1.0
+        assert_float_equal(sphere.radius, 1.0)
 
+class TestCylinder:
+    def test_cylinder_fit(self):
+        data = np.array([[1,0,0],[0,1,0],[-1,0,0],[0,-1,10], [1,0,10], [0,1,10], [1,0,5], [0,-1,5], [0,1,5]])
+        cylinder = fit.cylinder_fit(data, weights=None)
+
+        assert_float_equal(cylinder.radius, 1.0)
+        assert_direction_equivalent(cylinder.direction, np.array([0,0,1]))
+
+    def test_cylinder_fit_with_weights(self):
+        data = np.array([[1,0,0],[0,1,0],[-1,0,0],[0,-1,10], [1,0,10], [0,1,10], [1,0,5], [0,-1,5], [0,1,5]])
+        cylinder = fit.cylinder_fit(data, weights=None)
+
+        assert_float_equal(cylinder.radius, 1.0)
+        assert_direction_equivalent(cylinder.direction, np.array([0,0,1]))

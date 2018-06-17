@@ -1,7 +1,7 @@
 import numpy as np
 
 from ._descriptor import Position, Direction, PositiveNumber
-from ._util import distance_pp
+from ._util import distance_point_point, distance_plane_point, distance_line_point
 from abc import ABC, abstractmethod
 
 class GeometricShape(ABC):
@@ -23,9 +23,7 @@ class Line(GeometricShape):
         self.direction = direction
 
     def distance_to_point(self, point):
-        delta_p = point - self.anchor_point
-        # return np.linalg.norm(np.cross(delta_p, self.direction), axis=-1)
-        return distance_pp(delta_p, np.expand_dims(np.dot(delta_p, self.direction), axis=1) @ np.atleast_2d(self.direction))
+        return distance_line_point(self.anchor_point, self.direction, point)
 
 class Plane(GeometricShape):
     anchor_point = Position()
@@ -36,7 +34,7 @@ class Plane(GeometricShape):
         self.normal = normal
 
     def distance_to_point(self, point):
-        return np.abs(np.dot(point - self.anchor_point, self.normal))
+        return distance_plane_point(self.anchor_point, self.normal, point)
 
 class Sphere(GeometricShape):
     center = Position()
@@ -47,7 +45,7 @@ class Sphere(GeometricShape):
         self.radius = radius
 
     def distance_to_point(self, point):
-        return np.abs(distance_pp(point, self.center) - self.radius)
+        return np.abs(distance_point_point(point, self.center) - self.radius)
 
 class Cylinder(Line):
     radius = PositiveNumber()
@@ -88,3 +86,21 @@ class Torus(Circle3D):
 
     def distance_to_point(self, point):
         return np.abs(super().distance_to_point(point) - self.minor_radius)
+
+class Cone(GeometricShape):
+    anchor_point = Position()
+    direction = Direction()
+    orth_distance = PositiveNumber()
+    phi  = PositiveNumber()
+
+    def __init__(self, anchor_point, direction, orth_distance, phi):
+        self.anchor_point = anchor_point
+        self.direction = direction
+        self.orth_distance = orth_distance
+        self.phi = phi
+
+    # TODO this probably requires distance_plane point to return negative numbers aswell, depending on the side
+    def distance_to_point(self, point):
+        return np.abs(distance_line_point(self.anchor_point, self.direction, point) * np.cos(self.phi) \
+            + distance_plane_point(self.anchor_point, self.direction, point) * np.sin(self.phi) \
+            - self.orth_distance)
