@@ -1,4 +1,4 @@
-from geomfitty import geom
+from geomfitty import geom3d
 from .test_util import assert_vector_equal
 
 import pytest
@@ -46,45 +46,45 @@ class AbstractTestGeom:
 
 class TestLine(AbstractTestGeom):
     def gen_random_shape(self):
-        return geom.Line(np.random.uniform(size=(3,)), np.random.uniform(size=(3,)))
+        return geom3d.Line(np.random.uniform(size=(3,)), np.random.uniform(size=(3,)))
 
     def test_line_contains_anchor_point_and_direction(self):
-        line = geom.Line([0, 0, 0], [1, 0, 0])
+        line = geom3d.Line([0, 0, 0], [1, 0, 0])
         assert_vector_equal(line.anchor_point, [0, 0, 0])
         assert_vector_equal(line.direction, [1, 0, 0])
 
     def test_line_direction_is_normalized(self):
-        line = geom.Line([0, 0, 0], [2, 0, 0])
+        line = geom3d.Line([0, 0, 0], [2, 0, 0])
         assert_vector_equal(line.direction, [1, 0, 0])
 
     def test_distance_to_line_is_calculated(self):
-        line = geom.Line([0, 0, 0], [1, 0, 0])
+        line = geom3d.Line([0, 0, 0], [1, 0, 0])
         assert line.distance_to_point([1, 1, 0]) == 1
         assert line.distance_to_point([1, 1, 1]) == np.sqrt(2)
         assert line.distance_to_point([1, 3, 4]) == 5
 
-        line = geom.Line([1, 0, 0], [1, 1, 0])
+        line = geom3d.Line([1, 0, 0], [1, 1, 0])
         assert line.distance_to_point([3, 2, 4]) == 4
         assert line.distance_to_point([0, 1, 0]) == np.sqrt(2)
 
     def test_distance_to_line_can_take_multiple_points(self):
-        line = geom.Line([0, 0, 0], [1, 0, 0])
+        line = geom3d.Line([0, 0, 0], [1, 0, 0])
         assert_vector_equal(line.distance_to_point([[1, 1, 0], [1, 3, 4]]), [1, 5])
 
 
 class TestPlane(AbstractTestGeom):
     def gen_random_shape(self):
-        return geom.Plane(np.random.uniform(size=(3,)), np.random.uniform(size=(3,)))
+        return geom3d.Plane(np.random.uniform(size=(3,)), np.random.uniform(size=(3,)))
 
 
 class TestSphere(AbstractTestGeom):
     def gen_random_shape(self):
-        return geom.Sphere(np.random.uniform(size=(3,)), np.random.uniform())
+        return geom3d.Sphere(np.random.uniform(size=(3,)), np.random.uniform())
 
 
 class TestCylinder(AbstractTestGeom):
     def gen_random_shape(self):
-        return geom.Cylinder(
+        return geom3d.Cylinder(
             np.random.uniform(size=(3,)),
             np.random.uniform(size=(3,)),
             np.random.uniform(),
@@ -93,21 +93,21 @@ class TestCylinder(AbstractTestGeom):
 
 class TestCircle3D(AbstractTestGeom):
     def gen_random_shape(self):
-        return geom.Circle3D(
+        return geom3d.Circle3D(
             np.random.uniform(size=(3,)),
             np.random.uniform(size=(3,)),
             np.random.uniform(),
         )
 
     def test_distance_to_a_point(self):
-        circle = geom.Circle3D([0, 0, 0], [1, 0, 0], 1)
+        circle = geom3d.Circle3D([0, 0, 0], [1, 0, 0], 1)
         assert circle.distance_to_point([1, 1, 0]) == 1
         assert circle.distance_to_point([0, 0, 2]) == 1
 
 
 class TestTorus(AbstractTestGeom):
     def gen_random_shape(self):
-        return geom.Torus(
+        return geom3d.Torus(
             np.random.uniform(size=(3,)),
             np.random.uniform(size=(3,)),
             np.random.uniform(),
@@ -115,6 +115,6 @@ class TestTorus(AbstractTestGeom):
         )
 
     def test_distance_to_a_point(self):
-        torus = geom.Torus([0, 0, 0], [1, 0, 0], 1, 0.5)
+        torus = geom3d.Torus([0, 0, 0], [1, 0, 0], 1, 0.5)
         assert torus.distance_to_point([1, 1, 0]) == 0.5
         assert torus.distance_to_point([0, 0, 2]) == 0.5

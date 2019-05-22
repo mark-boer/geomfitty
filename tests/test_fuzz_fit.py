@@ -1,4 +1,4 @@
-from geomfitty import fit, geom
+from geomfitty import fit3d, geom3d
 from .test_util import assert_float_equal, assert_direction_equivalent
 
 import numpy as np
@@ -26,8 +26,8 @@ def test_fuzz_line():
     points = np.random.uniform(low=-1, high=1, size=(100, 3))
     points[:, 2] *= 10
 
-    line1 = fit.line_fit(points)
-    line2, results = brute_force_fit(geom.Line, (3, 3), points)
+    line1 = fit3d.line_fit(points)
+    line2, results = brute_force_fit(geom3d.Line, (3, 3), points)
 
     assert_direction_equivalent(line1.direction, line2.direction)
     assert_float_equal(
@@ -41,8 +41,8 @@ def test_fuzz_plane():
     points = np.random.uniform(low=-1, high=1, size=(100, 3))
     points[:, :2] *= 10
 
-    plane1 = fit.plane_fit(points)
-    plane2, results = brute_force_fit(geom.Plane, (3, 3), points)
+    plane1 = fit3d.plane_fit(points)
+    plane2, results = brute_force_fit(geom3d.Plane, (3, 3), points)
 
     # print(plane1.normal)
     # print(plane2.normal)
