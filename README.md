@@ -23,15 +23,18 @@ Run the tests
 pytest
 ```
 
-Run the code formatter 
+Run the code formatter
 ```
 black .
 ```
 
 ### todo
- * Add more tests
- * Add remaining fits
- * Add doctests and include these in pytest
- * Add jacobian to fits
- * Add typing and start using mypy
- * Add python <=3.4 support
+ [] Add more tests
+ [] Add remaining fits
+     [x] torus
+     [x] circle3D
+ [] Add doctests and include these in pytest
+ [] Add jacobian to fits
+ [] Add typing and start using mypy
+ [] Add python <=3.4 support
+ [] Improve precision of Circle3D and Torus fit

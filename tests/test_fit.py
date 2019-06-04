@@ -94,7 +94,62 @@ class TestCylinder:
                 [0, 1, 5],
             ]
         )
-        cylinder = fit3d.cylinder_fit(data, weights=None)
+        cylinder = fit3d.cylinder_fit(data, weights=np.ones((9,)))
 
         assert_float_equal(cylinder.radius, 1.0)
         assert_direction_equivalent(cylinder.direction, np.array([0, 0, 1]))
+
+
+class TestCircle3D:
+    def test_circle_fit(self):
+        data = np.array(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [-1, 0, 0],
+                [0, -1, 0],
+                [np.sqrt(1 / 2), np.sqrt(1 / 2), 0],
+                [-np.sqrt(1 / 2), np.sqrt(1 / 2), 0],
+                [np.sqrt(1 / 2), -np.sqrt(1 / 2), 0],
+            ],
+            dtype=np.float64,
+        )
+        circle = fit3d.circle3D_fit(data + np.array([1, 1, 0]))
+
+        np.testing.assert_allclose(circle.radius, 1.0)
+        np.testing.assert_allclose(circle.direction, [0, 0, 1], atol=1e-7, rtol=0)
+        np.testing.assert_allclose(circle.center, [1, 1, 0], atol=1e-7, rtol=0)
+
+
+class TestTorus:
+    def test_torus_fit(self):
+        data = np.array(
+            [
+                [1, 0, 0],
+                [0, 1, 0],
+                [-1, 0, 0],
+                [0, -1, 0],
+                [2, 0, 1],
+                [2, 0, -1],
+                [-2, 0, 1],
+                [-2, 0, -1],
+                [0, 2, 1],
+                [0, 2, -1],
+                [0, -2, 1],
+                [0, -2, -1],
+                [3, 0, 0],
+                [-3, 0, 0],
+                [0, 3, 0],
+                [0, -3, 0],
+            ],
+            dtype=np.float64,
+        )
+        torus = fit3d.torus_fit(data + np.array([1, 1, 0]))
+
+        np.testing.assert_allclose(torus.major_radius, 2.0)
+        np.testing.assert_allclose(torus.minor_radius, 1.0)
+        np.testing.assert_allclose(torus.direction, [0, 0, 1], atol=1e-7, rtol=0)
+        np.testing.assert_allclose(torus.center, [1, 1, 0], atol=1e-7, rtol=0)
+
+        distances = torus.distance_to_point(data + np.array([1, 1, 0]))
+        np.testing.assert_allclose(distances, 0, atol=1e-12, rtol=0)
