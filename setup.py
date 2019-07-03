@@ -13,11 +13,11 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = "geomfitty"
-DESCRIPTION = "A python library for fitting 3D geometric shapes"
+DESCRIPTION = "A python library for fitting 2/3D geometric shapes"
 URL = "https://github.com/mark-boer/geomfitty"
 EMAIL = "m.h.boer.2@gmail.com"
 AUTHOR = "Mark Boer"
-REQUIRES_PYTHON = ">=3.5.0"
+REQUIRES_PYTHON = ">=3.4.0"
 VERSION = None
 
 # What packages are required for this module to be executed?
