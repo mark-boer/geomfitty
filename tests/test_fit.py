@@ -146,10 +146,10 @@ class TestTorus:
         )
         torus = fit3d.torus_fit(data + np.array([1, 1, 0]))
 
-        np.testing.assert_allclose(torus.major_radius, 2.0)
-        np.testing.assert_allclose(torus.minor_radius, 1.0)
-        np.testing.assert_allclose(torus.direction, [0, 0, 1], atol=1e-7, rtol=0)
-        np.testing.assert_allclose(torus.center, [1, 1, 0], atol=1e-7, rtol=0)
+        assert_float_equal(torus.major_radius, 2.0)
+        assert_float_equal(torus.minor_radius, 1.0)
+        assert_direction_equivalent(torus.direction, [0, 0, 1])
+        assert_vector_equal(torus.center, [1, 1, 0])
 
         distances = torus.distance_to_point(data + np.array([1, 1, 0]))
         np.testing.assert_allclose(distances, 0, atol=1e-12, rtol=0)

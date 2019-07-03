@@ -17,8 +17,8 @@ class GeometricShape(ABC):
 
 
 class Line(GeometricShape):
-    anchor_point = Position()
-    direction = Direction()
+    anchor_point = Position(3)
+    direction = Direction(3)
 
     def __init__(self, anchor_point, direction):
         self.anchor_point = anchor_point
@@ -29,8 +29,8 @@ class Line(GeometricShape):
 
 
 class Plane(GeometricShape):
-    anchor_point = Position()
-    normal = Direction()
+    anchor_point = Position(3)
+    normal = Direction(3)
 
     def __init__(self, anchor_point, normal):
         self.anchor_point = anchor_point
@@ -41,7 +41,7 @@ class Plane(GeometricShape):
 
 
 class Sphere(GeometricShape):
-    center = Position()
+    center = Position(3)
     radius = PositiveNumber()
 
     def __init__(self, center, radius):
@@ -64,8 +64,8 @@ class Cylinder(Line):
 
 
 class Circle3D(GeometricShape):
-    center = Position()
-    direction = Direction()
+    center = Position(3)
+    direction = Direction(3)
     radius = PositiveNumber()
 
     def __init__(self, center, direction, radius):
@@ -101,8 +101,8 @@ class Torus(Circle3D):
 
 
 class Cone(GeometricShape):
-    anchor_point = Position()
-    direction = Direction()
+    anchor_point = Position(3)
+    direction = Direction(3)
     orth_distance = PositiveNumber()
     phi = PositiveNumber()
 

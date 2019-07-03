@@ -5,8 +5,8 @@ import pytest
 
 
 class DemoClass:
-    pos = Position()
-    drn = Direction()
+    pos = Position(3)
+    drn = Direction(3)
     num = PositiveNumber()
 
 

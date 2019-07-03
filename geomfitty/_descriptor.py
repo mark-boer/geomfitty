@@ -5,7 +5,8 @@ DTYPE = np.float64
 
 
 class Position:
-    def __init__(self):
+    def __init__(self, dim: int):
+        self.dim = dim
         self._instance_data = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
@@ -18,13 +19,14 @@ class Position:
 
     def __set__(self, instance, value):
         value = np.array(value, dtype=DTYPE, copy=True)  # TODO copy?
-        if value.shape != (3,):
+        if value.shape != (self.dim,):
             raise ValueError("Could not construct a 3D point")
         self._instance_data[instance] = value
 
 
 class Direction:
-    def __init__(self):
+    def __init__(self, dim: int):
+        self.dim = dim
         self._instance_data = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
@@ -38,7 +40,7 @@ class Direction:
     def __set__(self, instance, value):
         value = np.array(value, dtype=DTYPE, copy=True)
         value /= np.linalg.norm(value)
-        if value.shape != (3,):
+        if value.shape != (self.dim,):
             raise ValueError("Could not construct a 3D point")
         self._instance_data[instance] = value
 
