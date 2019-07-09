@@ -22,7 +22,9 @@ def line_fit(points, weights=None) -> geom3d.Line:
     centroid = centroid_fit(points, weights)
     weights = weights or np.ones(points.shape[0])
     centered_points = points - centroid
-    u, s, v = np.linalg.svd(weights * centered_points.transpose() @ centered_points)
+    u, s, v = np.linalg.svd(
+        np.matmul(weights * centered_points.transpose(), centered_points)
+    )
     return geom3d.Line(anchor_point=centroid, direction=v[0])
 
 
@@ -30,7 +32,9 @@ def plane_fit(points, weights=None) -> geom3d.Plane:
     centroid = centroid_fit(points, weights)
     weights = weights or np.ones(points.shape[0])
     centered_points = points - centroid
-    u, s, v = np.linalg.svd(weights * centered_points.transpose() @ centered_points)
+    u, s, v = np.linalg.svd(
+        np.matmul(weights * centered_points.transpose(), centered_points)
+    )
     return geom3d.Plane(anchor_point=centroid, normal=v[2])
 
 

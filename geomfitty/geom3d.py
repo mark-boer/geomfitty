@@ -75,8 +75,9 @@ class Circle3D(GeometricShape):
 
     def distance_to_point(self, point):
         delta_p = point - self.center
-        x1 = np.expand_dims(np.dot(delta_p, self.direction), axis=1) @ np.atleast_2d(
-            self.direction
+        x1 = np.matmul(
+            np.expand_dims(np.dot(delta_p, self.direction), axis=1),
+            np.atleast_2d(self.direction),
         )
         x2 = delta_p - x1
         return np.sqrt(

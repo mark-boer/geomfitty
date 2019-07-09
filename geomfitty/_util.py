@@ -36,6 +36,8 @@ def distance_line_point(line_point, line_direction, point):
     delta_p = point - line_point
     return distance_point_point(
         delta_p,
-        np.expand_dims(np.dot(delta_p, line_direction), axis=1)
-        @ np.atleast_2d(line_direction),
+        np.matmul(
+            np.expand_dims(np.dot(delta_p, line_direction), axis=1),
+            np.atleast_2d(line_direction),
+        ),
     )
