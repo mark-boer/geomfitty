@@ -1,7 +1,6 @@
 import numpy as np
 
 from abc import ABC, abstractmethod
-from _descriptor import *
 
 
 class Transform(ABC):
@@ -35,7 +34,3 @@ class CoordTransform(Translation, Rotation):
         Translation.transform_coords(self, coords)
         Rotation.transform_coords(self, coords)
         # super(Rotation, self).transform(coords)
-
-
-a = CoordTransform()
-a.transform_coords([1, 2, 3])
