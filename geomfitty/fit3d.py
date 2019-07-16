@@ -20,7 +20,7 @@ def centroid_fit(points, weights=None):
 
 def line_fit(points, weights=None) -> geom3d.Line:
     centroid = centroid_fit(points, weights)
-    weights = weights or np.ones(points.shape[0])
+    weights = 1.0 if weights is None else weights
     centered_points = points - centroid
     u, s, v = np.linalg.svd(
         np.matmul(weights * centered_points.transpose(), centered_points)
@@ -30,7 +30,7 @@ def line_fit(points, weights=None) -> geom3d.Line:
 
 def plane_fit(points, weights=None) -> geom3d.Plane:
     centroid = centroid_fit(points, weights)
-    weights = weights or np.ones(points.shape[0])
+    weights = 1.0 if weights is None else weights
     centered_points = points - centroid
     u, s, v = np.linalg.svd(
         np.matmul(weights * centered_points.transpose(), centered_points)
@@ -54,7 +54,9 @@ def sphere_fit(points, weights=None, initial_guess=None) -> geom3d.Sphere:
     def sphere_fit_residuals(center, points, weights):
         distances = distance_point_point(center, points)
         radius = np.average(distances, weights=weights)
-        return (distances - radius) * (weights or 1)
+        if weights is None:
+            return distances - radius
+        return (distances - radius) * np.sqrt(weights)
 
     results = optimize.least_squares(
         sphere_fit_residuals, x0=initial_guess.center, args=(points, weights)
@@ -74,8 +76,9 @@ def cylinder_fit(points, weights=None, initial_guess: geom3d.Cylinder = None):
         line = geom3d.Line(anchor_direction[:3], anchor_direction[3:])
         distances = line.distance_to_point(points)
         radius = np.average(distances, weights=weights)
-        weights = weights if weights is not None else 1.0
-        return (distances - radius) * weights
+        if weights is None:
+            return distances - radius
+        return (distances - radius) * np.sqrt(weights)
 
     results = optimize.least_squares(
         cylinder_fit_residuals,
