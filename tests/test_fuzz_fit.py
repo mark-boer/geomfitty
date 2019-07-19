@@ -144,3 +144,71 @@ def test_fuzz_sphere_with_weights(initial_guess):
 
     assert_vector_equal(sphere1.center, sphere2.center)
     assert_float_equal(sphere1.radius, sphere2.radius)
+
+
+@pytest.fixture(scope="function", params=[None, 1])
+def weights(request):
+    if request.param is None:
+        return None
+    return np.random.uniform(size=(100,))
+
+
+# @pytest.mark.parametrize("initial_guess",  [None])
+# TODO add intial_guess
+def test_fuzz_cylinder(weights):
+    initial_guess = geom3d.Cylinder([0, 0, 0], [0, 0, 1], 1)
+
+    points = np.random.uniform(low=-2, high=2, size=(3, 100))
+    points[:2] /= np.linalg.norm(points[:2], axis=0) * np.random.uniform(
+        low=0.9, high=1.1, size=(100,)
+    )
+    points = points.T
+
+    cylinder1 = fit3d.cylinder_fit(points, weights=weights, initial_guess=initial_guess)
+    cylinder2, _ = brute_force_fit(
+        geom3d.Cylinder,
+        (3, 3, 1),
+        points,
+        weights=weights,
+        x0=np.array([0, 0, 0, 0, 0, 1, 1], dtype=np.float64),
+    )
+
+    weights = 1.0 if weights is None else weights
+
+    assert_float_equal(
+        np.sum(weights * cylinder1.distance_to_point(points) ** 2),
+        np.sum(weights * cylinder2.distance_to_point(points) ** 2),
+    )
+
+    print(np.sum(weights * cylinder1.distance_to_point(points) ** 2))
+    print(np.sum(weights * cylinder1.distance_to_point(points) ** 2))
+
+    assert_direction_equivalent(cylinder1.direction, cylinder2.direction)
+    assert_float_equal(cylinder1.radius, cylinder2.radius)
+
+
+def test_fuzz_circle():
+    weights = None
+    initial_guess = geom3d.Circle3D([0, 0, 0], [0, 0, 1], 1)
+
+    points = np.random.uniform(low=-1, high=1, size=(3, 100))
+    points[2] /= 10
+    points[:2] /= np.linalg.norm(points[:2], axis=0) * np.random.uniform(
+        low=0.9, high=1.1, size=(100,)
+    )
+    points = points.T
+
+    circle1 = fit3d.circle3D_fit(points, weights=weights, initial_guess=initial_guess)
+    circle2, results = brute_force_fit(
+        geom3d.Circle3D,
+        (3, 3, 1),
+        points,
+        weights=weights,
+        x0=np.array([0, 0, 0, 0, 0, 1, 1], dtype=np.float64),
+    )
+
+    # assert np.sum(circle1.distance_to_point(points) ** 2) <= np.sum(circle2.distance_to_point(points) ** 2)
+
+    assert_vector_equal(circle1.center, circle2.center)
+    assert_direction_equivalent(circle1.direction, circle2.direction)
+    assert_float_equal(circle1.radius, circle2.radius)

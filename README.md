@@ -30,11 +30,30 @@ black .
 
 ### todo
  - [ ] Add more tests
+     - [ ] Cone fit
+     - [ ] Fuzz torus
+     - [ ] Fuzz Cone
  - [ ] Add remaining fits
-    - [x] torus
-    - [x] circle3D
- - [ ] Add doctests and include these in pytest
+     - [x] torus
+     - [x] circle3D
+     - [ ] Cone
+ - [ ] Allow fits to run without initial guess
+     - [ ] Cylinder
+     - [ ] Circle3D
+     - [ ] Torus
+ - [x] Add doctests and include these in pytest
  - [ ] Add jacobian to fits
  - [ ] Add typing and start using mypy
- - [ ] Add python <=3.4 support
+ - [x] Add python 3.4 support
  - [ ] Improve precision of Circle3D and Torus fit
+ - [ ] test_fuzz_cylinder sometimes fails (multiple minima?)
+
+ - [ ] Future functionality
+     - [ ] Add Coordinate transformations
+         - [ ] Rotation
+         - [ ] Translation
+         - [ ] General
+     - [ ] Add 2D geometries
+         - [ ] Line
+         - [ ] Circle
+         - [ ] Ellipse

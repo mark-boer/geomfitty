@@ -59,6 +59,11 @@ class Cylinder(Line):
         super().__init__(anchor_point, direction)
         self.radius = radius
 
+    def __repr__(self):
+        return "Cylinder(anchor_point={}, direction={}, radius={})".format(
+            self.anchor_point, self.direction, self.radius
+        )
+
     def distance_to_point(self, point):
         return np.abs(super().distance_to_point(point) - self.radius)
 

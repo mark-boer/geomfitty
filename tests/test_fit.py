@@ -1,4 +1,4 @@
-from geomfitty import fit3d
+from geomfitty import fit3d, geom3d
 from .test_util import (
     assert_vector_equal,
     assert_direction_equivalent,
@@ -75,7 +75,9 @@ class TestCylinder:
                 [0, 1, 5],
             ]
         )
-        cylinder = fit3d.cylinder_fit(data, weights=None)
+        cylinder = fit3d.cylinder_fit(
+            data, weights=None, initial_guess=geom3d.Cylinder([0, 0, 0], [0, 0, 1], 1)
+        )
 
         assert_float_equal(cylinder.radius, 1.0)
         assert_direction_equivalent(cylinder.direction, np.array([0, 0, 1]))
@@ -94,7 +96,11 @@ class TestCylinder:
                 [0, 1, 5],
             ]
         )
-        cylinder = fit3d.cylinder_fit(data, weights=np.ones((9,)))
+        cylinder = fit3d.cylinder_fit(
+            data,
+            weights=np.ones((9,)),
+            initial_guess=geom3d.Cylinder([0, 0, 0], [0, 0, 1], 1),
+        )
 
         assert_float_equal(cylinder.radius, 1.0)
         assert_direction_equivalent(cylinder.direction, np.array([0, 0, 1]))
@@ -114,7 +120,10 @@ class TestCircle3D:
             ],
             dtype=np.float64,
         )
-        circle = fit3d.circle3D_fit(data + np.array([1, 1, 0]))
+        circle = fit3d.circle3D_fit(
+            data + np.array([1, 1, 0]),
+            initial_guess=geom3d.Circle3D([0, 0, 0], [0, 0, 1], 1),
+        )
 
         np.testing.assert_allclose(circle.radius, 1.0)
         np.testing.assert_allclose(circle.direction, [0, 0, 1], atol=1e-7, rtol=0)

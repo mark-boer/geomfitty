@@ -48,7 +48,9 @@ def fast_sphere_fit(points) -> geom3d.Sphere:
     return geom3d.Sphere(center=center, radius=radius)
 
 
-def sphere_fit(points, weights=None, initial_guess=None) -> geom3d.Sphere:
+def sphere_fit(
+    points, weights=None, initial_guess: geom3d.Sphere = None
+) -> geom3d.Sphere:
     initial_guess = initial_guess or fast_sphere_fit(points)
 
     def sphere_fit_residuals(center, points, weights):
@@ -68,7 +70,7 @@ def sphere_fit(points, weights=None, initial_guess=None) -> geom3d.Sphere:
     return geom3d.Sphere(center=results.x, radius=radius)
 
 
-# TODO initial_guess
+# TODO be able to run wihtout initial_guess
 def cylinder_fit(points, weights=None, initial_guess: geom3d.Cylinder = None):
     assert weights is None or len(points) == len(weights)
 
@@ -80,10 +82,9 @@ def cylinder_fit(points, weights=None, initial_guess: geom3d.Cylinder = None):
             return distances - radius
         return (distances - radius) * np.sqrt(weights)
 
+    x0 = np.concatenate([initial_guess.anchor_point, initial_guess.direction])
     results = optimize.least_squares(
-        cylinder_fit_residuals,
-        x0=np.array([0, 0, 0, 1, 0, 0], dtype=np.float64),
-        args=(points, weights),
+        cylinder_fit_residuals, x0=x0, args=(points, weights)
     )
     if not results.success:
         return RuntimeError(results.message)
@@ -94,20 +95,30 @@ def cylinder_fit(points, weights=None, initial_guess: geom3d.Cylinder = None):
     return geom3d.Cylinder(results.x[:3], results.x[3:], radius)
 
 
-# TODO initial_guess
+# TODO be able to run wihtout initial_guess
 def circle3D_fit(points, weights=None, initial_guess: geom3d.Circle3D = None):
-    def circle_fit_residuals(circle_params, points, weights):
-        weights = weights if weights is not None else 1.0
+    def circle_fit_residuals(circle_params, points, sqrt_w):
         circle = geom3d.Circle3D(
             circle_params[:3], circle_params[3:], la.norm(circle_params[3:])
         )
         distances = circle.distance_to_point(points)
-        return distances
+        return distances * sqrt_w
 
+    x0 = np.concatenate(
+        [initial_guess.center, initial_guess.direction * initial_guess.radius]
+    )
     results = optimize.least_squares(
         circle_fit_residuals,
-        x0=np.array([0, 0, 0, 0, 0, 1], dtype=np.float64),
-        args=(points, weights),
+        jac="2-point",
+        method="lm",
+        x0=x0,
+        args=(points, 1.0 if weights is None else np.sqrt(weights)),
+    )
+
+    results = optimize.minimize(
+        lambda *args: np.sum(circle_fit_residuals(*args) ** 2),
+        x0=results.x,
+        args=(points, 1.0 if weights is None else np.sqrt(weights)),
     )
 
     if not results.success:
