@@ -1,5 +1,6 @@
-import numpy as np
 from weakref import WeakKeyDictionary
+
+import numpy as np
 
 DTYPE = np.float64
 
@@ -7,7 +8,7 @@ DTYPE = np.float64
 class Position:
     def __init__(self, dim: int):
         self.dim = dim
-        self._instance_data = WeakKeyDictionary[str, np.ndarray]()
+        self._instance_data: WeakKeyDictionary[str, np.ndarray] = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
         try:
@@ -27,7 +28,7 @@ class Position:
 class Direction:
     def __init__(self, dim: int):
         self.dim = dim
-        self._instance_data = WeakKeyDictionary[str, np.ndarray]()
+        self._instance_data: WeakKeyDictionary[str, np.ndarray] = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
         try:

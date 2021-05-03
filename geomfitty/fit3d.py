@@ -1,9 +1,9 @@
-from . import geom3d
-from ._util import distance_point_point
-
 import numpy as np
 import numpy.linalg as la
 from scipy import optimize  # type: ignore
+
+from . import geom3d
+from ._util import distance_point_point
 
 
 def centroid_fit(points, weights=None):

@@ -1,7 +1,8 @@
-from geomfitty._descriptor import Position, Direction, PositiveNumber
-from .test_util import assert_vector_equal
-
 import pytest
+
+from geomfitty._descriptor import Direction, Position, PositiveNumber
+
+from .test_util import assert_vector_equal
 
 
 class DemoClass:

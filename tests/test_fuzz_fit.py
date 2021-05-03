@@ -1,14 +1,15 @@
-from geomfitty import fit3d, geom3d
-from .test_util import (
-    assert_float_equal,
-    assert_vector_equal,
-    assert_direction_equivalent,
-)
-
 import numpy as np
 import numpy.random
-from scipy import optimize  # type: ignore
 import pytest
+from scipy import optimize  # type: ignore
+
+from geomfitty import fit3d, geom3d
+
+from .test_util import (
+    assert_direction_equivalent,
+    assert_float_equal,
+    assert_vector_equal,
+)
 
 
 def brute_force_fit(Shape, args, points, weights=None, x0=None):

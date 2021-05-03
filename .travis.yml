@@ -6,6 +6,9 @@ python:
   - "3.6"
   - "3.7"
 install:
-  - pip install .
+  - poetry install
 script:
-  - pytest
+  - poetry run pytest
+  - poetry run black --check .
+  - poetry run isort --check .
+  - poetry run mypy

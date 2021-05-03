@@ -1,8 +1,9 @@
-from geomfitty import geom3d
-from .test_util import assert_vector_equal
-
-import pytest
 import numpy as np
+import pytest
+
+from geomfitty import geom3d
+
+from .test_util import assert_vector_equal
 
 
 def test_asserts():

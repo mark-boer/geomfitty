@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "geomfitty"
+version = "0.1.0"
+description = "A python library for fitting 2/3D geometric shapes"
+authors = ["Mark Boer <m.h.boer.2@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.7,<3.10"
+numpy = "^1.20.2"
+scipy = "^1.6.3"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.812"
+pytest = "^6.2.3"
+black = "^21.4b2"
+isort = "^5.8.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort] # to prevent isort from interfering with black
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"

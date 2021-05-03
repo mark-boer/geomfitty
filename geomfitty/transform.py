@@ -1,12 +1,12 @@
-import numpy as np
-
 from abc import ABC, abstractmethod
+
+import numpy as np
 
 
 class Transform(ABC):
     @abstractmethod
     def transform_coords(self, coords):
-        """"""
+        """ """
 
     # @abstractmethod
     # def transform_direction(self, directions):
@@ -14,7 +14,7 @@ class Transform(ABC):
     #     """
 
     def transform(self, shape):
-        ""
+        """ """
 
 
 class Translation(Transform):

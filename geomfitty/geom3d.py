@@ -1,8 +1,9 @@
+from abc import ABC, abstractmethod
+
 import numpy as np
 
-from ._descriptor import Position, Direction, PositiveNumber
-from ._util import distance_point_point, distance_plane_point, distance_line_point
-from abc import ABC, abstractmethod
+from ._descriptor import Direction, Position, PositiveNumber
+from ._util import distance_line_point, distance_plane_point, distance_point_point
 
 
 class GeometricShape(ABC):

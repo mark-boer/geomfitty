@@ -1,12 +1,14 @@
-from geomfitty import fit3d, geom3d
-from .test_util import (
-    assert_vector_equal,
-    assert_direction_equivalent,
-    assert_float_equal,
-)
-
 import numpy as np
 import pytest
+
+from geomfitty import fit3d, geom3d
+
+from .test_util import (
+    assert_direction_equivalent,
+    assert_float_equal,
+    assert_vector_equal,
+)
+
 
 # test centroid fit
 class TestCentroid:
