@@ -1,3 +1,3 @@
-VERSION = (0, 1, 0)
+from importlib_metadata import version
 
-__version__ = ".".join(map(str, VERSION))
+__version__ = version(__package__)
