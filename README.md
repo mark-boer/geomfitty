@@ -14,18 +14,19 @@ cd geomfitty
 
 Install the package as in editable mode and install the dev requirements.
 ```
-pip install -e .
-pip install -r requirements-dev.txt
+poetry install
 ```
 
 Run the tests
 ```
-pytest
+poetry run pytest
+poetry run mypy .
 ```
 
 Run the code formatter
 ```
-black .
+poetry run black .
+poetry run isort .
 ```
 
 ### todo
@@ -43,10 +44,8 @@ black .
      - [ ] Torus
  - [x] Add doctests and include these in pytest
  - [ ] Add jacobian to fits
- - [ ] Add typing and start using mypy
- - [x] Add python 3.4 support
+ - [x] Add typing and start using mypy
  - [ ] Improve precision of Circle3D and Torus fit
- - [ ] test_fuzz_cylinder sometimes fails (multiple minima?)
 
  - [ ] Future functionality
      - [ ] Add Coordinate transformations
@@ -57,3 +56,5 @@ black .
          - [ ] Line
          - [ ] Circle
          - [ ] Ellipse
+     - [ ] Plotting functionality
+         - [ ] Using Open3D

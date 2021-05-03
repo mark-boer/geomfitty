@@ -10,6 +10,26 @@ from .test_util import (
 )
 
 
+def test_check_input():
+    with pytest.raises(ValueError):
+        fit3d._check_input(np.ones((10, 2)), None)
+    with pytest.raises(ValueError):
+        fit3d._check_input(np.ones((10,)), None)
+    with pytest.raises(ValueError):
+        fit3d._check_input(np.ones((10, 3)), np.ones((9,)))
+    with pytest.raises(ValueError):
+        fit3d._check_input(np.ones((10, 3)), np.ones((10, 3)))
+
+    # assert no raise
+    fit3d._check_input(np.ones((10, 3)), None)
+    fit3d._check_input(
+        np.ones((10, 3)),
+        np.ones(
+            10,
+        ),
+    )
+
+
 # test centroid fit
 class TestCentroid:
     def test_simple_call(self):
@@ -155,7 +175,10 @@ class TestTorus:
             ],
             dtype=np.float64,
         )
-        torus = fit3d.torus_fit(data + np.array([1, 1, 0]))
+        torus = fit3d.torus_fit(
+            data + np.array([1, 1, 0]),
+            initial_guess=geom3d.Torus([-0.1, 0.1, 0.1], [0, 0.1, 0.9], 2.5, 0.8),
+        )
 
         assert_float_equal(torus.major_radius, 2.0)
         assert_float_equal(torus.minor_radius, 1.0)
