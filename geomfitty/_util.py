@@ -1,5 +1,5 @@
 import numpy as np
-import scipy.spatial
+import scipy.spatial  # type: ignore
 
 
 def vector_equal(v1, v2):

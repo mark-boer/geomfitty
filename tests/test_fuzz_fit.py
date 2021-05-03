@@ -7,7 +7,7 @@ from .test_util import (
 
 import numpy as np
 import numpy.random
-from scipy import optimize
+from scipy import optimize  # type: ignore
 import pytest
 
 

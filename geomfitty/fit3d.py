@@ -3,7 +3,7 @@ from ._util import distance_point_point
 
 import numpy as np
 import numpy.linalg as la
-from scipy import optimize
+from scipy import optimize  # type: ignore
 
 
 def centroid_fit(points, weights=None):
@@ -64,14 +64,18 @@ def sphere_fit(
         sphere_fit_residuals, x0=initial_guess.center, args=(points, weights)
     )
     if not results.success:
-        return RuntimeError(results.message)
+        raise RuntimeError(results.message)
 
     radius = np.average(distance_point_point(points, results.x), weights=weights)
     return geom3d.Sphere(center=results.x, radius=radius)
 
 
-# TODO be able to run wihtout initial_guess
 def cylinder_fit(points, weights=None, initial_guess: geom3d.Cylinder = None):
+    if initial_guess is None:
+        raise NotImplementedError(
+            "Cylinder fit currently does support running without an intial guess "
+        )
+
     assert weights is None or len(points) == len(weights)
 
     def cylinder_fit_residuals(anchor_direction, points, weights):
@@ -95,8 +99,12 @@ def cylinder_fit(points, weights=None, initial_guess: geom3d.Cylinder = None):
     return geom3d.Cylinder(results.x[:3], results.x[3:], radius)
 
 
-# TODO be able to run wihtout initial_guess
 def circle3D_fit(points, weights=None, initial_guess: geom3d.Circle3D = None):
+    if initial_guess is None:
+        raise NotImplementedError(
+            "Cylinder fit currently does support running without an intial guess "
+        )
+
     def circle_fit_residuals(circle_params, points, sqrt_w):
         circle = geom3d.Circle3D(
             circle_params[:3], circle_params[3:], la.norm(circle_params[3:])
