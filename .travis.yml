@@ -12,4 +12,4 @@ script:
   - poetry run pytest
   - poetry run black --check .
   - poetry run isort --check .
-  - poetry run mypy
+  - poetry run mypy .
