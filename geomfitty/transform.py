@@ -6,8 +6,7 @@ from abc import ABC, abstractmethod
 class Transform(ABC):
     @abstractmethod
     def transform_coords(self, coords):
-        """
-        """
+        """"""
 
     # @abstractmethod
     # def transform_direction(self, directions):

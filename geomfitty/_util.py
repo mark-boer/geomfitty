@@ -9,7 +9,7 @@ def vector_equal(v1, v2):
 
 
 def distance_point_point(p1, p2):
-    """ Calculates the euclidian distance between two points or sets of points
+    """Calculates the euclidian distance between two points or sets of points
     >>> distance_point_point(np.array([1, 0]), np.array([0, 1]))
     1.4142135623730951
     >>> distance_point_point(np.array([[1, 1], [0, 0]]), np.array([0, 1]))
@@ -21,7 +21,12 @@ def distance_point_point(p1, p2):
 
 
 def distance_plane_point(plane_point, plane_normal, point):
-    """ Calculates the distance from a plane to a point"""
+    """Calculates the distance from a plane to one or more points
+    >>> distance_plane_point(np.array([0, 0, 1]), np.array([0, 0, 1]), np.array([2, 2, 2]))
+    1
+    >>> distance_plane_point(np.array([0, 0, 1]), np.array([0, 0, 1]), np.array([[2, 2, 2], [2, 2, 3]]))
+    array([1, 2])
+    """
     assert np.allclose(
         np.linalg.norm(plane_normal), 1.0, rtol=1e-12, atol=1e-12, equal_nan=False
     )
@@ -29,7 +34,12 @@ def distance_plane_point(plane_point, plane_normal, point):
 
 
 def distance_line_point(line_point, line_direction, point):
-    """ Calculates the distance from a line to a point"""
+    """Calculates the distance from a line to a point
+    >>> distance_line_point(np.array([0, 0, 1]), np.array([0, 0, 1]), np.array([1, 1, 2]))
+    1.4142135623730951
+    >>> distance_line_point(np.array([0, 0, 1]), np.array([0, 0, 1]), np.array([[1, 0, 1], [0, 2, 3]]))
+    array([1., 2.])
+    """
     assert np.allclose(
         np.linalg.norm(line_direction), 1.0, rtol=1e-12, atol=1e-12, equal_nan=False
     )
@@ -37,7 +47,7 @@ def distance_line_point(line_point, line_direction, point):
     return distance_point_point(
         delta_p,
         np.matmul(
-            np.expand_dims(np.dot(delta_p, line_direction), axis=1),
+            np.expand_dims(np.dot(delta_p, line_direction), axis=-1),
             np.atleast_2d(line_direction),
         ),
     )

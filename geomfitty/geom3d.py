@@ -8,8 +8,7 @@ from abc import ABC, abstractmethod
 class GeometricShape(ABC):
     @abstractmethod
     def distance_to_point(self, point):
-        """ Calculates the smallest distance from a point to the shape
-        """
+        """Calculates the smallest distance from a point to the shape"""
 
     # @abstractmethod
     # def project_point(self, point):
@@ -81,7 +80,7 @@ class Circle3D(GeometricShape):
     def distance_to_point(self, point):
         delta_p = point - self.center
         x1 = np.matmul(
-            np.expand_dims(np.dot(delta_p, self.direction), axis=1),
+            np.expand_dims(np.dot(delta_p, self.direction), axis=-1),
             np.atleast_2d(self.direction),
         )
         x2 = delta_p - x1

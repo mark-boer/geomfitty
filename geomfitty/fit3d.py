@@ -7,7 +7,7 @@ from scipy import optimize
 
 
 def centroid_fit(points, weights=None):
-    """ Calculates the weighted average of a set of points
+    """Calculates the weighted average of a set of points
     This minimizes the sum of the squared distances between the points
     and the centroid.
 
