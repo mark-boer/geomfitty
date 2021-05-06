@@ -9,7 +9,7 @@ from ._util import distance_line_point, distance_plane_point, distance_point_poi
 class GeometricShape(ABC):
     @abstractmethod
     def distance_to_point(self, point):
-        """Calculates the (signed) smallest distance from a point to the shape"""
+        """Calculates the smallest distance from a point to the shape"""
 
     # @abstractmethod
     # def project_point(self, point):
@@ -24,6 +24,9 @@ class Line(GeometricShape):
         self.anchor_point = anchor_point
         self.direction = direction
 
+    def __repr__(self):
+        return f"Line(anchor_point={self.anchor_point.to_list()}, direction={self.direction.to_list()})"
+
     def distance_to_point(self, point):
         return distance_line_point(self.anchor_point, self.direction, point)
 
@@ -36,8 +39,11 @@ class Plane(GeometricShape):
         self.anchor_point = anchor_point
         self.normal = normal
 
+    def __repr__(self):
+        return f"Plane(anchor_point={self.anchor_point.to_list()}, normal={self.normal.to_list()})"
+
     def distance_to_point(self, point):
-        return distance_plane_point(self.anchor_point, self.normal, point)
+        return np.abs(distance_plane_point(self.anchor_point, self.normal, point))
 
 
 class Sphere(GeometricShape):
@@ -47,6 +53,9 @@ class Sphere(GeometricShape):
     def __init__(self, center, radius):
         self.center = center
         self.radius = radius
+
+    def __repr__(self):
+        return f"Sphere(center={self.center.to_list()}, radius={self.radius})"
 
     def distance_to_point(self, point):
         return np.abs(distance_point_point(point, self.center) - self.radius)
@@ -60,7 +69,7 @@ class Cylinder(Line):
         self.radius = radius
 
     def __repr__(self):
-        return f"Cylinder(anchor_point={self.anchor_point}, direction={self.direction}, radius={self.radius})"
+        return f"Cylinder(anchor_point={self.anchor_point.to_list()}, direction={self.direction.to_list()}, radius={self.radius})"
 
     def distance_to_point(self, point):
         return np.abs(super().distance_to_point(point) - self.radius)
@@ -75,6 +84,9 @@ class Circle3D(GeometricShape):
         self.center = center
         self.direction = direction
         self.radius = radius
+
+    def __repr__(self):
+        return f"Circle3D(center={self.center.to_list()}, direction={self.direction.to_list()}, radius={self.radius})"
 
     def distance_to_point(self, point):
         delta_p = point - self.center
@@ -96,32 +108,12 @@ class Torus(Circle3D):
         super().__init__(center, direction, major_radius)
         self.minor_radius = minor_radius
 
+    def __repr__(self):
+        return f"Torus(center={self.center.to_list()}, direction={self.direction.to_list()}, major_radius={self.major_radius}, minor_radius={self.minor_radius})"
+
     @property
     def major_radius(self):
         return self.radius
 
     def distance_to_point(self, point):
         return np.abs(super().distance_to_point(point) - self.minor_radius)
-
-
-class Cone(GeometricShape):
-    anchor_point = Position(3)
-    direction = Direction(3)
-    orth_distance = PositiveNumber()
-    phi = PositiveNumber()
-
-    def __init__(self, anchor_point, direction, orth_distance, phi):
-        self.anchor_point = anchor_point
-        self.direction = direction
-        self.orth_distance = orth_distance
-        self.phi = phi
-
-    # TODO this probably requires distance_plane point to return negative numbers aswell, depending on the side
-    def distance_to_point(self, point):
-        return np.abs(
-            distance_line_point(self.anchor_point, self.direction, point)
-            * np.cos(self.phi)
-            + distance_plane_point(self.anchor_point, self.direction, point)
-            * np.sin(self.phi)
-            - self.orth_distance
-        )

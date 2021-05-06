@@ -21,7 +21,7 @@ def distance_point_point(p1, p2):
 
 
 def distance_plane_point(plane_point, plane_normal, point):
-    """Calculates the distance from a plane to one or more points
+    """Calculates the signed distance from a plane to one or more points
     >>> distance_plane_point(np.array([0, 0, 1]), np.array([0, 0, 1]), np.array([2, 2, 2]))
     1
     >>> distance_plane_point(np.array([0, 0, 1]), np.array([0, 0, 1]), np.array([[2, 2, 2], [2, 2, 3]]))
@@ -30,7 +30,7 @@ def distance_plane_point(plane_point, plane_normal, point):
     assert np.allclose(
         np.linalg.norm(plane_normal), 1.0, rtol=1e-12, atol=1e-12, equal_nan=False
     )
-    return np.abs(np.dot(point - plane_point, plane_normal))
+    return np.dot(point - plane_point, plane_normal)
 
 
 def distance_line_point(line_point, line_direction, point):
