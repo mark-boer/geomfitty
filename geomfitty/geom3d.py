@@ -25,7 +25,7 @@ class Line(GeometricShape):
         self.direction = direction
 
     def __repr__(self):
-        return f"Line(anchor_point={self.anchor_point.to_list()}, direction={self.direction.to_list()})"
+        return f"Line(anchor_point={self.anchor_point.tolist()}, direction={self.direction.tolist()})"
 
     def distance_to_point(self, point):
         return distance_line_point(self.anchor_point, self.direction, point)
@@ -40,7 +40,7 @@ class Plane(GeometricShape):
         self.normal = normal
 
     def __repr__(self):
-        return f"Plane(anchor_point={self.anchor_point.to_list()}, normal={self.normal.to_list()})"
+        return f"Plane(anchor_point={self.anchor_point.tolist()}, normal={self.normal.tolist()})"
 
     def distance_to_point(self, point):
         return np.abs(distance_plane_point(self.anchor_point, self.normal, point))
@@ -55,7 +55,7 @@ class Sphere(GeometricShape):
         self.radius = radius
 
     def __repr__(self):
-        return f"Sphere(center={self.center.to_list()}, radius={self.radius})"
+        return f"Sphere(center={self.center.tolist()}, radius={self.radius})"
 
     def distance_to_point(self, point):
         return np.abs(distance_point_point(point, self.center) - self.radius)
@@ -69,7 +69,7 @@ class Cylinder(Line):
         self.radius = radius
 
     def __repr__(self):
-        return f"Cylinder(anchor_point={self.anchor_point.to_list()}, direction={self.direction.to_list()}, radius={self.radius})"
+        return f"Cylinder(anchor_point={self.anchor_point.tolist()}, direction={self.direction.tolist()}, radius={self.radius})"
 
     def distance_to_point(self, point):
         return np.abs(super().distance_to_point(point) - self.radius)
@@ -86,7 +86,7 @@ class Circle3D(GeometricShape):
         self.radius = radius
 
     def __repr__(self):
-        return f"Circle3D(center={self.center.to_list()}, direction={self.direction.to_list()}, radius={self.radius})"
+        return f"Circle3D(center={self.center.tolist()}, direction={self.direction.tolist()}, radius={self.radius})"
 
     def distance_to_point(self, point):
         delta_p = point - self.center
@@ -109,7 +109,7 @@ class Torus(Circle3D):
         self.minor_radius = minor_radius
 
     def __repr__(self):
-        return f"Torus(center={self.center.to_list()}, direction={self.direction.to_list()}, major_radius={self.major_radius}, minor_radius={self.minor_radius})"
+        return f"Torus(center={self.center.tolist()}, direction={self.direction.tolist()}, major_radius={self.major_radius}, minor_radius={self.minor_radius})"
 
     @property
     def major_radius(self):

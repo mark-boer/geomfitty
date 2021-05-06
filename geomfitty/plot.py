@@ -1,4 +1,5 @@
 import functools
+import numbers
 from typing import List, Union
 
 import numpy as np
@@ -36,7 +37,7 @@ def _(points: np.ndarray):
 
 
 @to_open3d_geom.register  # type: ignore[no-redef]
-def _(geom: geom3d.Line, length=1):
+def _(geom: geom3d.Line, length: numbers.Number = 1):
     points = (
         geom.anchor_point
         + np.stack([geom.direction, -geom.direction], axis=0) * length / 2
@@ -54,11 +55,11 @@ def _(geom: geom3d.Sphere):
     mesh = o3d.geometry.TriangleMesh.create_sphere(radius=geom.radius)
     mesh.translate(geom.center)
 
-    return o3d.geometry.create_line_set_from_triangle_mesh(mesh)
+    return o3d.geometry.LineSet.create_from_triangle_mesh(mesh)
 
 
 @to_open3d_geom.register  # type: ignore[no-redef]
-def _(geom: geom3d.Plane, length=1):
+def _(geom: geom3d.Plane, length: numbers.Number = 1):
     points = np.array([[1, 1, 0], [-1, 1, 0], [1, -1, 0], [-1, -1, 0]]) * length / 2
 
     mesh = o3d.geometry.TetraMesh()
@@ -69,11 +70,11 @@ def _(geom: geom3d.Plane, length=1):
     mesh.rotate(rotation)
     mesh.translate(geom.anchor_point)
 
-    return o3d.geometry.create_line_set_from_triangle_mesh(mesh)
+    return o3d.geometry.LineSet.create_from_tetra_mesh(mesh)
 
 
 @to_open3d_geom.register  # type: ignore[no-redef]
-def _(geom: geom3d.Cylinder, length=1):
+def _(geom: geom3d.Cylinder, length: numbers.Number = 1):
     mesh = o3d.geometry.TriangleMesh.create_cylinder(radius=geom.radius, height=length)
 
     mesh.remove_vertices_by_index([0, 1])
@@ -82,19 +83,31 @@ def _(geom: geom3d.Cylinder, length=1):
     mesh.rotate(rotation)
     mesh.translate(geom.anchor_point)
 
-    return o3d.geometry.create_line_set_from_triangle_mesh(mesh)
+    return o3d.geometry.LineSet.create_from_triangle_mesh(mesh)
+
+
+@to_open3d_geom.register  # type: ignore[no-redef]
+def _(geom: geom3d.Circle3D):
+    mesh = o3d.geometry.TriangleMesh.create_torus(
+        torus_radius=geom.radius, tube_radius=1e-6
+    )
+    rotation = vec2vec_rotation([0, 0, 1], geom.direction)
+    mesh.rotate(rotation)
+    mesh.translate(geom.center)
+
+    return o3d.geometry.LineSet.create_from_triangle_mesh(mesh)
 
 
 @to_open3d_geom.register  # type: ignore[no-redef]
 def _(geom: geom3d.Torus):
-    mesh = o3d.geometry.create_torus(
+    mesh = o3d.geometry.TriangleMesh.create_torus(
         torus_radius=geom.major_radius, tube_radius=geom.minor_radius
     )
     rotation = vec2vec_rotation([0, 0, 1], geom.direction)
     mesh.rotate(rotation)
-    mesh.translate(geom.anchor_point)
+    mesh.translate(geom.center)
 
-    return o3d.geometry.create_line_set_from_triangle_mesh(mesh)
+    return o3d.geometry.LineSet.create_from_triangle_mesh(mesh)
 
 
 def plot(

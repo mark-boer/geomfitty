@@ -154,8 +154,6 @@ def weights(request):
     return np.random.uniform(size=(100,))
 
 
-# @pytest.mark.parametrize("initial_guess",  [None])
-# TODO add intial_guess
 @pytest.mark.parametrize("repeat", range(20))
 def test_fuzz_cylinder(repeat, weights):
     initial_guess = geom3d.Cylinder([0, 0, 0], [0, 0, 1], 1)
@@ -205,8 +203,6 @@ def test_fuzz_circle():
         weights=weights,
         x0=np.array([0, 0, 0, 0, 0, 1, 1], dtype=np.float64),
     )
-
-    # assert np.sum(circle1.distance_to_point(points) ** 2) <= np.sum(circle2.distance_to_point(points) ** 2)
 
     assert_vector_equal(circle1.center, circle2.center)
     assert_direction_equivalent(circle1.direction, circle2.direction)
