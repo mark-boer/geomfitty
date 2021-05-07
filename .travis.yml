@@ -9,7 +9,7 @@ before_install:
 install:
   - poetry install
 script:
-  - poetry run pytest
+  - poetry run pytest --ignore geomfitty/plot.py
   - poetry run black --check .
   - poetry run isort --check .
   - poetry run mypy .
