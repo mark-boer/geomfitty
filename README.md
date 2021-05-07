@@ -12,19 +12,19 @@ It also supports the use of a __weights__ vector to give certain points more imp
 
 <img src="https://render.githubusercontent.com/render/math?math=\Sigma_i w_i * d_i^2">
 
-The following geometries are currently supported:
+__The following geometries are currently supported:__
 
-__line__: An infinitely long line, parameterized by an anchor_point on the line and a direction.
+ * __line__: An infinitely long line, parameterized by an anchor_point on the line and a direction.
 
-__plane__: An infite plane parameterized by an anchor_point and a plane normal.
+ * __plane__: An infite plane parameterized by an anchor_point and a plane normal.
 
-__sphere__: A sphere defined by the center and a positve radius.
+ * __sphere__: A sphere defined by the center and a positve radius.
 
-__circle__: A circle positioned in 3D. It is given by a center and direction. The direction is the normal of the plane that this circle lies in. The third parameter is the radius
+ * __circle__: A circle positioned in 3D. It is given by a center and direction. The direction is the normal of the plane that this circle lies in. The third parameter is the radius
 
-__cylinder__: A inifintely long cylinder, parameterized by an anchor_point and direction in the same way as the line is. And a radius of the cylinder.
+ * __cylinder__: A inifintely long cylinder, parameterized by an anchor_point and direction in the same way as the line is. And a radius of the cylinder.
 
-__torus__: Similar to a circle in 3D, but with an extra tube radius. The radius of the circle is called major_radius, the radius of the tube is called minor_radius.
+ * __torus__: Similar to a circle in 3D, but with an extra tube radius. The radius of the circle is called major_radius, the radius of the tube is called minor_radius.
 
 
 ## Examples
