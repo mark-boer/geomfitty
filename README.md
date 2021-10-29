@@ -52,7 +52,7 @@ Plot the results using Open3D, if you have that installed:
 geomfitty.plot.plot([point, circle])
 ```
 
-![Example of a circle fit](./doc/images/circle3d_fit.png)
+![Example of a circle fit](./doc/images/circle3d_fit.PNG)
 
 
 ## Development
